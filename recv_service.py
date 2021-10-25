@@ -55,9 +55,9 @@ class RecvService:
         # CAUSE: Detected data classification Contoso_IC_Sensitive in sample data
         # ACTION: Data must be encrypted
         if columnDetails["resultSensitivity"] == "Contoso_IC_Sensitive" and columnDetails["currentEncryptionType"] == "0":
-            print("\nALERT-001")
-            print("CAUSE: Detected data classification Contoso_IC_Sensitive in sample data")
-            print("ACTION: Data must be encrypted\n")
+            print("\nALERT-001", file=sys.stderr)
+            print("CAUSE: Detected data classification Contoso_IC_Sensitive in sample data", file=sys.stderr)
+            print("ACTION: Data must be encrypted\n", file=sys.stderr)
             alert = True
             # Write event to Event Hub
 
@@ -65,24 +65,24 @@ class RecvService:
         # CAUSE: Detected schema classification does not match the declared state
         # ACTION: Must change declared classification to match actual
         if columnDetails["resultSensitivity"] != columnDetails["declaredSensitivity"]:
-            print("\nALERT-002")
-            print("CAUSE: Detected schema classification does not match the declared state")
-            print("ACTION: Must change declared classification to match actual\n")
+            print("\nALERT-002", file=sys.stderr)
+            print("CAUSE: Detected schema classification does not match the declared state", file=sys.stderr)
+            print("ACTION: Must change declared classification to match actual\n", file=sys.stderr)
             alert = True
             # Write event to Event Hub
 
         if alert:
-            print("###########################################################################")
-            print("Column Name: " + columnDetails["columnName"])
-            print("Qualified Name: " + columnDetails["qualifiedName"])
-            print("Data Type: " + columnDetails["columnDataType"])
-            print("Purview Classified As: " + columnDetails["columnClassificationType"])
-            print("Resulting Sensitivity: " + columnDetails["resultSensitivity"])
-            print("Declared Sensitivity: " + columnDetails["declaredSensitivity"])
-            print("Current Encryption Type: " + columnDetails["currentEncryptionType"])
-            print("Desired Encryption Type: " + columnDetails["desiredEncryptionType"])
-            print("Update Time: " + columnDetails["updateTime"])
-            print("###########################################################################")
+            print("###########################################################################",file=sys.stderr)
+            print("Column Name: " + columnDetails["columnName"], file=sys.stderr)
+            print("Qualified Name: " + columnDetails["qualifiedName"], file=sys.stderr)
+            print("Data Type: " + columnDetails["columnDataType"], file=sys.stderr)
+            print("Purview Classified As: " + columnDetails["columnClassificationType"], file=sys.stderr)
+            print("Resulting Sensitivity: " + columnDetails["resultSensitivity"], file=sys.stderr)
+            print("Declared Sensitivity: " + columnDetails["declaredSensitivity"], file=sys.stderr)
+            print("Current Encryption Type: " + columnDetails["currentEncryptionType"], file=sys.stderr)
+            print("Desired Encryption Type: " + columnDetails["desiredEncryptionType"], file=sys.stderr)
+            print("Update Time: " + columnDetails["updateTime"], file=sys.stderr)
+            print("###########################################################################", file=sys.stderr)
         # ##################################################################################################
 
     def getColumnDetails(self, guid):

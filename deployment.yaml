@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: purview-classification-drift-notifier
+  name: purview-classification-drift-notifier
+  namespace: purview
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: purview-classification-drift-notifier
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: purview-classification-drift-notifier
+    spec:
+      containers:
+        - image: mdrrakiburrahman/purview-classification-drift-notifier
+          imagePullPolicy: Always
+          name: purview-classification-drift-notifier
+          ports:
+            - containerPort: 5000
+          env:
+            - name: PYTHONUNBUFFERED
+              value: "1"
+            - name: PURVIEW_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: purview-secret
+                  key: PURVIEW_NAME
+            - name: AZURE_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: purview-secret
+                  key: AZURE_CLIENT_ID
+            - name: AZURE_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: purview-secret
+                  key: AZURE_CLIENT_SECRET
+            - name: AZURE_TENANT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: purview-secret
+                  key: AZURE_TENANT_ID
+            - name: EVENT_HUB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: purview-secret
+                  key: EVENT_HUB_NAME
+            - name: EVENT_HUB_CONN_STR
+              valueFrom:
+                secretKeyRef:
+                  name: purview-secret
+                  key: EVENT_HUB_CONN_STR
+            - name: AZURE_STORAGE_CONN_STR
+              valueFrom:
+                secretKeyRef:
+                  name: purview-secret
+                  key: AZURE_STORAGE_CONN_STR
+            - name: AZURE_BLOB_CONTAINER
+              valueFrom:
+                secretKeyRef:
+                  name: purview-secret
+                  key: AZURE_BLOB_CONTAINER

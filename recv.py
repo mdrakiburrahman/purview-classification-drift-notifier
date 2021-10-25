@@ -14,6 +14,7 @@ from recv_service import RecvService
 from pprint import *
 import os
 import json
+import sys
 
 # Connection strings
 CONNECTION_STR = os.environ["EVENT_HUB_CONN_STR"]
@@ -26,7 +27,7 @@ recvService = RecvService();
 
 async def on_event(partition_context, event):
     event_data = event.body_as_json()
-    
+
     # Handle each event type accordingly
     eventType = event_data['message']['operationType']
 
@@ -51,6 +52,7 @@ async def receive(client):
 
 
 async def main():
+    print("Starting stream...", file=sys.stderr)
     checkpoint_store = BlobCheckpointStore.from_connection_string(STORAGE_CONNECTION_STR, BLOB_CONTAINER_NAME)
     client = EventHubConsumerClient.from_connection_string(
         CONNECTION_STR,
@@ -63,5 +65,6 @@ async def main():
 
 
 if __name__ == '__main__':
+    print("Python process started.", file=sys.stderr)
     loop = asyncio.get_event_loop()
     loop.run_until_complete(main())

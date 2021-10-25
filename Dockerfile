@@ -6,4 +6,4 @@ COPY . .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-CMD ["python", "recv.py"]
+CMD ["python", "-u", "recv.py"]
