@@ -35,31 +35,56 @@ class RecvService:
                 file=sys.stderr)
 
     def classificationAddedOrUpdated(self, payload):
-        self.printer("Classification Added", payload)
         guid = payload["message"]["entity"]["guid"]
         response = self.getColumnDetails(guid)
 
         # Guid was deleted, return immediately
         try:
             if response["errorCode"]:
-                 self.printer("Purview Response", response["errorMessage"])
                  return None
         except:
             pass # No error code; continue
-
+        
         # Parse out response for relevant details
         columnDetails = self.parseColumnDetails(response)
 
-        print("Column Name: " + columnDetails["columnName"])
-        print("Qualified Name: " + columnDetails["qualifiedName"])
-        print("Data Type: " + columnDetails["columnDataType"])
-        print("Purview Classified As: " + columnDetails["columnClassificationType"])
-        print("Resulting Sensitivity: " + columnDetails["resultSensitivity"])
-        print("Declared Sensitivity: " + columnDetails["declaredSensitivity"])
-        print("Current Encryption Type: " + columnDetails["currentEncryptionType"])
-        print("Desired Encryption Type: " + columnDetails["desiredEncryptionType"])
-        print("Update Time: " + columnDetails["updateTime"])
-    
+        # ##################################################################################################
+        # Generate Alerts
+        alert = False
+        # ALERT-001
+        # CAUSE: Detected data classification Contoso_IC_Sensitive in sample data
+        # ACTION: Data must be encrypted
+        if columnDetails["resultSensitivity"] == "Contoso_IC_Sensitive" and columnDetails["currentEncryptionType"] == "0":
+            print("\nALERT-001")
+            print("CAUSE: Detected data classification Contoso_IC_Sensitive in sample data")
+            print("ACTION: Data must be encrypted\n")
+            alert = True
+            # Write event to Event Hub
+
+        # ALERT-002
+        # CAUSE: Detected schema classification does not match the declared state
+        # ACTION: Must change declared classification to match actual
+        if columnDetails["resultSensitivity"] != columnDetails["declaredSensitivity"]:
+            print("\nALERT-002")
+            print("CAUSE: Detected schema classification does not match the declared state")
+            print("ACTION: Must change declared classification to match actual\n")
+            alert = True
+            # Write event to Event Hub
+
+        if alert:
+            print("###########################################################################")
+            print("Column Name: " + columnDetails["columnName"])
+            print("Qualified Name: " + columnDetails["qualifiedName"])
+            print("Data Type: " + columnDetails["columnDataType"])
+            print("Purview Classified As: " + columnDetails["columnClassificationType"])
+            print("Resulting Sensitivity: " + columnDetails["resultSensitivity"])
+            print("Declared Sensitivity: " + columnDetails["declaredSensitivity"])
+            print("Current Encryption Type: " + columnDetails["currentEncryptionType"])
+            print("Desired Encryption Type: " + columnDetails["desiredEncryptionType"])
+            print("Update Time: " + columnDetails["updateTime"])
+            print("###########################################################################")
+        # ##################################################################################################
+
     def getColumnDetails(self, guid):
         # Get detailed information about an asset
         cmd = "pv entity readBulk --guid {}".format(guid)
