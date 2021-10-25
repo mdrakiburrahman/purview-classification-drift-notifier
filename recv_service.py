@@ -9,12 +9,13 @@ import jmespath
 from datetime import datetime
 
 # Fill up based on business logic, can be Custom Classifications as well
+# 2 = Encrypted in Purview
 ClassificationMap = {
     "MICROSOFT.PERSONAL.NAME": ["Contoso_IC_Confidential", "0"],
     "MICROSOFT.PERSONAL.US.PHONE_NUMBER": ["Contoso_IC_Confidential", "0"],
     "MICROSOFT.PERSONAL.EMAIL": ["Contoso_IC_Confidential", "0"],
-    "MICROSOFT.FINANCIAL.CREDIT_CARD_NUMBER": ["Contoso_IC_Sensitive", "1"],
-    "MICROSOFT.GOVERNMENT.US.SOCIAL_SECURITY_NUMBER": ["Contoso_IC_Sensitive", "1"]
+    "MICROSOFT.FINANCIAL.CREDIT_CARD_NUMBER": ["Contoso_IC_Sensitive", "2"],
+    "MICROSOFT.GOVERNMENT.US.SOCIAL_SECURITY_NUMBER": ["Contoso_IC_Sensitive", "2"]
 }
 
 class RecvService:
