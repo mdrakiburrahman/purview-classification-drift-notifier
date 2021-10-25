@@ -64,19 +64,3 @@ spec:
                 secretKeyRef:
                   name: purview-secret
                   key: AZURE_BLOB_CONTAINER
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: purview-secret
-  namespace: purview
-type: Opaque
-stringData:
-  PURVIEW_NAME: "your--purview--account"
-  AZURE_CLIENT_ID: "your--client--id"
-  AZURE_CLIENT_SECRET: "your--client--secret"
-  AZURE_TENANT_ID: "your--tenant"
-  EVENT_HUB_NAME: "atlas_entities"
-  EVENT_HUB_CONN_STR: "Endpoint=sb://your--purview--eh.servicebus.windows.net/;SharedAccessKeyName=AlternateSharedAccessKey;SharedAccessKey=your--access--key"
-  AZURE_STORAGE_CONN_STR: "your--storage--account--connstr"
-  AZURE_BLOB_CONTAINER: "your--storage--container"
