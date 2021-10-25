@@ -1,0 +1,10 @@
+# Event Hub libraries
+azure-eventhub
+azure-eventhub-checkpointstoreblob-aio
+# Purview Python libraries
+azure-identity 
+azure-purview-catalog
+azure-purview-scanning
+purviewcli==0.1.34
+# Python helpers
+jmespath
